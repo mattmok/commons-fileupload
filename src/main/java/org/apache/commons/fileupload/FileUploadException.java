@@ -94,7 +94,6 @@ public class FileUploadException extends Exception {
         }
     }
 
-    @SuppressWarnings("sync-override")
     @Override
     public Throwable getCause() {
         return cause;

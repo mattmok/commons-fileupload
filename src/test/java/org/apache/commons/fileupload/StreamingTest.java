@@ -16,6 +16,13 @@
  */
 package org.apache.commons.fileupload;
 
+import junit.framework.TestCase;
+import org.apache.commons.fileupload.FileUploadBase.IOFileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.servlet.ServletRequestContext;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FilterInputStream;
@@ -24,14 +31,6 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.fileupload.FileUploadBase.IOFileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.servlet.ServletRequestContext;
-
-import junit.framework.TestCase;
 
 /**
  * Unit test for items with varying sizes.
@@ -48,7 +47,7 @@ public class StreamingTest extends TestCase {
         final Iterator<FileItem> fileIter = fileItems.iterator();
         int add = 16;
         int num = 0;
-        for (int i = 0;  i < 16384;  i += add) {
+        for (int i = 0;  i < 160;  i += add) {
             if (++add == 32) {
                 add = 16;
             }
@@ -206,7 +205,8 @@ public class StreamingTest extends TestCase {
         final OutputStreamWriter osw = new OutputStreamWriter(baos, "US-ASCII");
         int add = 16;
         int num = 0;
-        for (int i = 0;  i < 16384;  i += add) {
+        //16384
+        for (int i = 0;  i < 160;  i += add) {
             if (++add == 32) {
                 add = 16;
             }

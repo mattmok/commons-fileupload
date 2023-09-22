@@ -16,8 +16,16 @@
  */
 package org.apache.commons.fileupload;
 
-import static java.lang.String.format;
+import org.apache.commons.fileupload.MultipartStream.ItemInputStream;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.servlet.ServletRequestContext;
+import org.apache.commons.fileupload.util.Closeable;
+import org.apache.commons.fileupload.util.FileItemHeadersImpl;
+import org.apache.commons.fileupload.util.LimitedInputStream;
+import org.apache.commons.fileupload.util.Streams;
+import org.apache.commons.io.IOUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -29,16 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.fileupload.MultipartStream.ItemInputStream;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.servlet.ServletRequestContext;
-import org.apache.commons.fileupload.util.Closeable;
-import org.apache.commons.fileupload.util.FileItemHeadersImpl;
-import org.apache.commons.fileupload.util.LimitedInputStream;
-import org.apache.commons.fileupload.util.Streams;
-import org.apache.commons.io.IOUtils;
+import static java.lang.String.format;
 
 /**
  * <p>High level API for processing file uploads.</p>
@@ -147,6 +146,10 @@ public abstract class FileUploadBase {
      */
     @Deprecated
     public static final int MAX_HEADER_SIZE = 1024;
+    /**
+     * Default max count size is 10.
+     */
+    public static final int MAX_COUNT_SIZE = 10;
 
     // ----------------------------------------------------------- Data members
 
@@ -166,7 +169,7 @@ public abstract class FileUploadBase {
      * The maximum permitted number of files that may be uploaded in a single
      * request. A value of -1 indicates no maximum.
      */
-    private long fileCountMax = -1;
+    private long fileCountMax = MAX_COUNT_SIZE;
 
     /**
      * The content encoding to use when reading part headers.
@@ -1206,7 +1209,6 @@ public abstract class FileUploadBase {
          *
          * @return The exceptions cause, if any, or null.
          */
-        @SuppressWarnings("sync-override")
         @Override
         public Throwable getCause() {
             return cause;
